@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermercado</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Box icon -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Css-->
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-1">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="app">
+                        <i class='bx bxs-bar-chart-square'></i>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="app">
+                        <i class='bx bx-spreadsheet'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-11">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-12 my-4 text-center">
+                        <img src="https://www.kindpng.com/picc/m/225-2250190_tamwin-online-logo-design-for-supermarket-hd-png.png"
+                            alt="logo" class="logo">
+                    </div>
+
+                    <div class="col-12 my-4">
+                        <div class="caja">
+
+                            <div id="acciones"></div>
+                            <button type="button" class="btn btn-primary mt-1 me-1" title="Agregar producto"
+                                id="abrirModalProducto">
+                                <i class='bx bxs-cart-add'></i>
+                            </button>
+
+                            <button type="button" class="btn btn-secondary mt-1" title="Mostrar productos"
+                                id="mostrarProductos">
+                                <i class='bx bxs-package'></i>
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalProducto" tabindex="-1"
+                                aria-labelledby="modalProductoLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalProductoLabel">Agregar Nuevo Producto</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formNuevoProducto">
+                                                <div class="mb-3">
+                                                    <label for="codigoProducto" class="form-label">Código de
+                                                        Producto</label>
+                                                    <input type="text" class="form-control" id="codigoProducto"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="nombreProducto" class="form-label">Nombre de
+                                                        Producto</label>
+                                                    <input type="text" class="form-control" id="nombreProducto"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="marcaProducto" class="form-label">Marca de
+                                                        Producto</label>
+                                                    <input type="text" class="form-control" id="marcaProducto" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="stockProducto" class="form-label">Stock</label>
+                                                    <input type="number" class="form-control" id="stockProducto"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="precioUnitario" class="form-label">Precio
+                                                        Unitario</label>
+                                                    <input type="number" class="form-control" id="precioUnitario"
+                                                        required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="descuentoProducto" class="form-label">Descuento
+                                                        (%)</label>
+                                                    <input type="number" class="form-control" id="descuentoProducto">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-primary" id="guardarProducto">Guardar
+                                                Producto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="contenedorproducto col-12 col-md-6 mb-2">
+                        <div class="caja">
+
+                            <div class="row">
+                                <div class="col">
+                                    <h3>Seleccione un Producto</h3>
+                                    <form id="formProducto">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <!-- Lista desplegable de productos -->
+                                                    <input type="text" class="form-control" id="buscarProducto"
+                                                        placeholder="Buscar por nombre, código o marca del producto...">
+                                                    <ul id="listaProductos" class="list-group"></ul>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="table-responsive col">
+                                    <table id="tablaTodosProductos" class="table table-striped">
+                                        <!-- Tabla para todos los productos -->
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Nombre</th>
+                                                <th>Marca</th>
+                                                <th>Stock</th>
+                                                <th>Precio Unitario</th>
+                                                <th>Descuento</th>
+                                                <th>Precio con Descuento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Filas de productos se insertarán aquí -->
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contenedorproducto col-12 col-md-6">
+                        <div class="caja">
+
+                            <h3>Productos Seleccionados</h3>
+                            <table id="tablaProductosSeleccionados" class="table table-striped">
+                                <!-- Tabla para productos seleccionados -->
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Precio Final</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Filas de productos seleccionados se insertarán aquí -->
+                                </tbody>
+                            </table>
+                            <h4>Total: $<span id="total">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="./assets/js/main.js"></script>
+</body>
+
+</html>
